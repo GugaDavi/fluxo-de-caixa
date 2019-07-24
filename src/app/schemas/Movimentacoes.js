@@ -14,7 +14,12 @@ const Movimentacoes = new mongoose.Schema({
   },
   entered: {
     type: Boolean,
-    default: false,
+    default: true,
+    required: true,
+  },
+  value: {
+    type: Number,
+    required: true,
   },
 });
 
