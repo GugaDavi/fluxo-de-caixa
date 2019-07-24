@@ -1,11 +1,18 @@
+import { startOfDay, parseISO } from 'date-fns';
 import Saldo from '../models/Saldo';
-import Movimentacoes from '../schemas/Movimentacoes';
+import Moves from '../schemas/Moves';
 
 class CaixaController {
+  async index(req, res) {
+    const saldoCaixa = await Saldo.findByPk(req.caixaId);
+
+    res.json({ saldo: `R$ ${saldoCaixa.saldo}` });
+  }
+
   async update(req, res) {
     const { description, date, entered, value } = req.body;
-    const saldoCaixa = await Saldo.findByPk('01');
     const user_id = req.userId;
+    const saldoCaixa = await Saldo.findByPk(req.caixaId);
 
     let { saldo } = saldoCaixa;
 
@@ -21,17 +28,19 @@ class CaixaController {
         .json({ error: 'Saldo indisponivel para a operação' });
     }
 
-    await Movimentacoes.create({
+    const correctDate = startOfDay(parseISO(date));
+
+    await Moves.create({
       user_id,
       description,
-      date,
+      date: correctDate,
       entered,
       value,
     });
 
     await saldoCaixa.update({ saldo });
 
-    return res.json({ user_id, description, date, entered, value });
+    return res.json({ user_id, description, date, entered, saldo });
   }
 }
 
