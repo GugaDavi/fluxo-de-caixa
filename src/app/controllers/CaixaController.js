@@ -2,7 +2,7 @@ import Saldo from '../models/Saldo';
 import Movimentacoes from '../schemas/Movimentacoes';
 
 class CaixaController {
-  async store(req, res) {
+  async update(req, res) {
     const { description, date, entered, value } = req.body;
     const saldoCaixa = await Saldo.findByPk('01');
     const user_id = req.userId;

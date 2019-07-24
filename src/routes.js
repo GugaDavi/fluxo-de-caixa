@@ -13,7 +13,7 @@ routes.post('/sessions', SessionController.store);
 
 routes.use(authMiddleware);
 
-routes.post('/caixa', CaixaController.store);
+routes.put('/caixa', CaixaController.update);
 routes.put('/users', UserController.update);
 
 export default routes;
