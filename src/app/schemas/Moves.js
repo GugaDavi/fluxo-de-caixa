@@ -23,4 +23,4 @@ const Movimentacoes = new mongoose.Schema({
   },
 });
 
-export default mongoose.model('movimentacao', Movimentacoes);
+export default mongoose.model('moves', Movimentacoes);
