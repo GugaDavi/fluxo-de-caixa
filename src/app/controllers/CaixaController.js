@@ -2,11 +2,13 @@ import { startOfDay, parseISO } from 'date-fns';
 import Saldo from '../models/Saldo';
 import Moves from '../schemas/Moves';
 
+import { formatPrice } from '../../util/format';
+
 class CaixaController {
   async index(req, res) {
     const saldoCaixa = await Saldo.findByPk(req.caixaId);
 
-    res.json({ saldo: `R$ ${saldoCaixa.saldo}` });
+    res.json({ saldo: formatPrice(saldoCaixa.saldo) });
   }
 
   async update(req, res) {
@@ -40,7 +42,7 @@ class CaixaController {
 
     await saldoCaixa.update({ saldo });
 
-    return res.json({ user_id, description, date, entered, saldo });
+    return res.json({ user_id, description, date, entered, value });
   }
 }
 
