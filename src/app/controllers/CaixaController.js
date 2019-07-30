@@ -6,15 +6,14 @@ import { formatPrice } from '../../util/format';
 
 class CaixaController {
   async index(req, res) {
-    const saldoCaixa = await Saldo.findByPk(req.caixaId);
+    const saldoCaixa = await Saldo.findByPk('01');
 
-    res.json({ saldo: formatPrice(saldoCaixa.saldo) });
+    res.json({ saldo: saldoCaixa.saldo });
   }
 
   async update(req, res) {
-    const { description, date, entered, value } = req.body;
-    const user_id = req.userId;
-    const saldoCaixa = await Saldo.findByPk(req.caixaId);
+    const { description, date, entered, value, name } = req.body;
+    const saldoCaixa = await Saldo.findByPk('01');
 
     let { saldo } = saldoCaixa;
 
@@ -33,7 +32,7 @@ class CaixaController {
     const correctDate = startOfDay(parseISO(date));
 
     await Moves.create({
-      user_id,
+      user_name: name,
       description,
       date: correctDate,
       entered,
@@ -42,7 +41,7 @@ class CaixaController {
 
     await saldoCaixa.update({ saldo });
 
-    return res.json({ user_id, description, date, entered, value });
+    return res.json({ name, description, date, entered, value });
   }
 }
 

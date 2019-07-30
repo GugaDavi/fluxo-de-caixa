@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 
 const Movimentacoes = new mongoose.Schema({
-  user_id: {
-    type: Number,
+  user_name: {
+    type: String,
     required: true,
   },
   description: {
