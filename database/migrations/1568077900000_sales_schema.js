@@ -5,9 +5,25 @@ const Schema = use('Schema')
 
 class SalesSchema extends Schema {
   up () {
-    this.create('sales', (table) => {
+    this.create('sales', table => {
       table.increments()
       table.string('product').notNullable()
+      table
+        .integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
+        .notNullable()
+      table
+        .integer('store_id')
+        .unsigned()
+        .references('id')
+        .inTable('stores')
+        .onUpdate('CASCADE')
+        .onDelete('CASCADE')
+        .notNullable()
       table
         .integer('client_id')
         .unsigned()
