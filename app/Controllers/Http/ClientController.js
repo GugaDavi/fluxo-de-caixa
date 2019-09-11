@@ -1,6 +1,6 @@
 'use strict'
 
-const { parseISO } = require('date-fns')
+const { parseISO, startOfDay } = require('date-fns')
 
 const Client = use('App/Models/Client')
 
@@ -8,7 +8,9 @@ class ClientController {
   async index ({ request, params }) {
     const { page } = request.get()
 
-    const clients = await Client.query().where('store_id', params.storeId).paginate(page)
+    const clients = await Client.query()
+      .where('store_id', params.storeId)
+      .paginate(page)
 
     return clients
   }
@@ -16,9 +18,16 @@ class ClientController {
   async store ({ request, response }) {
     const { name, email, date, fone, address, store_id } = request.all()
 
-    const born = parseISO(date)
+    const born = startOfDay(parseISO(date))
 
-    const client = await Client.create({ name, email, fone, born, address, store_id })
+    const client = await Client.create({
+      name,
+      email,
+      fone,
+      born,
+      address,
+      store_id
+    })
 
     return client
   }
