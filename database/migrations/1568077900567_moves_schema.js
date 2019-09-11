@@ -5,8 +5,15 @@ const Schema = use('Schema')
 
 class MovesSchema extends Schema {
   up () {
-    this.create('moves', (table) => {
+    this.create('moves', table => {
       table.increments()
+      table
+        .integer('user_id')
+        .unsigned()
+        .references('id')
+        .inTable('users')
+        .onUpdate('CASCADE')
+        .onDelete('SET NULL')
       table
         .integer('store_id')
         .unsigned()
