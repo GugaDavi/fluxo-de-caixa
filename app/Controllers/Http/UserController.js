@@ -13,15 +13,21 @@ class UserController {
       master = true
     }
 
-    const user = await User.create({ username, master, email, store_id, password })
+    const user = await User.create({
+      username,
+      master,
+      email,
+      store_id,
+      password
+    })
 
     return user
   }
 
-  async update ({ request, params }) {
+  async update ({ request, auth }) {
     const data = request.all()
 
-    const user = await User.findOrFail(params.id)
+    const user = await User.findOrFail(auth.user.id)
 
     user.merge(data)
 

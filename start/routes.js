@@ -14,6 +14,9 @@ Route.group(() => {
   Route.post('clients', 'ClientController.store')
   Route.put('clients', 'ClientController.update')
 
+  Route.get('moves/:storeId', 'MovesController.index')
   Route.post('moves', 'MovesController.store')
-  Route.put('moves/:id', 'MovesController.update')
+
+  Route.get('sales/:storeId', 'SalesController.index')
+  Route.post('sales', 'SalesController.store')
 }).middleware(['auth'])
