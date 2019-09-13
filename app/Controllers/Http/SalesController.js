@@ -23,8 +23,10 @@ class SaleController {
 
     const sales = await Sale.query()
       .where('store_id', params.storeId)
-      .whereIn('date', [startMonth, endMonth])
+      .whereBetween('date', [startMonth, endMonth])
       .fetch()
+
+    console.log(startMonth, endMonth)
 
     return sales
   }
@@ -68,28 +70,6 @@ class SaleController {
   }
 
   /**
-   * Display a single sale.
-   * GET sales/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show ({ params, request, response, view }) {}
-
-  /**
-   * Render a form to update an existing sale.
-   * GET sales/:id/edit
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async edit ({ params, request, response, view }) {}
-
-  /**
    * Update sale details.
    * PUT or PATCH sales/:id
    *
@@ -97,7 +77,17 @@ class SaleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request, response }) {}
+  async update ({ params, request, response }) {
+    const sale = await Sale.findOrFail(params.saleId)
+
+    const data = request.all()
+
+    sale.merge(data)
+
+    sale.save()
+
+    return sale
+  }
 
   /**
    * Delete a sale with id.
@@ -107,7 +97,13 @@ class SaleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params, request, response }) {}
+  async destroy ({ params, request, response }) {
+    const sale = await Sale.findOrFail(params.saleId)
+
+    sale.delete()
+
+    return response.send()
+  }
 }
 
 module.exports = SaleController
