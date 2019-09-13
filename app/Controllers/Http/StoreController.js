@@ -3,7 +3,11 @@
 const Store = use('App/Models/Store')
 
 class StoreController {
-  async index ({ request, response, view }) {}
+  async index ({ request, response, view }) {
+    const stores = await Store.query().fetch()
+
+    return stores
+  }
 
   async store ({ request }) {
     const { storeName, local, balance } = request.all()
