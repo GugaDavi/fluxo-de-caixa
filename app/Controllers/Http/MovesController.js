@@ -17,6 +17,7 @@ class MoveController {
     const moves = await Move.query()
       .where('store_id', storeId)
       .where('date', date)
+      .with('user')
       .fetch()
 
     return moves
